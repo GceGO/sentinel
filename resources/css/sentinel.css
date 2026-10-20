@@ -1,0 +1,148 @@
+/*
+ * GCEGO Sentinel stylesheet (Tailwind CSS v4).
+ *
+ * Self-contained: it scans only Sentinel's views and presets, so
+ * authentication pages load a small stylesheet without dashboard CSS. The
+ * colors are gcego/swatches tokens (light and dark), so
+ * brand colors and themes apply without rebuilding.
+ *
+ * Sentinel serves a prebuilt copy (resources/dist/sentinel.css). To build
+ * it with your own Vite instead, add this file and resources/js/sentinel.js
+ * to your Vite inputs and set gcego-sentinel.assets.mode to "vite".
+ *
+ * "../../../swatches" and "../../../chroma" are the GCEGO packages next to this
+ * one (vendor/gcego/ when installed with Composer, packages/ in the monorepo).
+ */
+
+@import "tailwindcss" source(none);
+/* Colors, the color utilities and the dark: variant (sign-in pages set no theme attribute, so no presets). */
+@import "../../../swatches/resources/css/tokens.css";
+@import "../../../swatches/resources/css/tailwind.css";
+/* Radius, shadows, typography and motion. */
+@import "../../../chroma/resources/css/tokens.css";
+@import "../../../chroma/resources/css/theme.css";
+
+@source "../views";
+@source "../../src/Presets";
+@source "../../src/Support/Icons.php";
+
+/* dark: utilities follow the "dark" class on <html> (set by sentinel.js or the server); the variant comes from gcego/swatches. */
+
+/*
+ * Motion: short, decelerating and never in the way. The card rises into
+ * place once; messages fade in. Both are off under prefers-reduced-motion
+ * (motion-safe: in the presets) and nothing waits for them.
+ */
+@theme {
+    --shadow-sentinel-card: 0 1px 2px rgb(15 23 41 / 0.04), 0 12px 32px -12px rgb(15 23 41 / 0.12);
+    --shadow-sentinel-control: inset 0 1px 2px rgb(15 23 41 / 0.04);
+    --shadow-sentinel-raised: 0 1px 2px rgb(15 23 41 / 0.05);
+    --shadow-sentinel-button: inset 0 1px 0 rgb(255 255 255 / 0.16), 0 1px 2px rgb(15 23 41 / 0.16), 0 4px 12px -4px color-mix(in oklab, var(--gcego-primary) 55%, transparent);
+    --animate-sentinel-enter: sentinel-enter 360ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    --animate-sentinel-fade: sentinel-fade 200ms ease-out both;
+
+    @keyframes sentinel-enter {
+        from {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    @keyframes sentinel-fade {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+}
+
+/*
+ * Brand surfaces: the few gradients of the design, defined once with their
+ * dark variants. They mix the panel's accent (--gcego-primary), so every
+ * panel gets its own colors without new CSS.
+ */
+@layer components {
+    .sentinel-brand-surface {
+        background-image: linear-gradient(150deg, var(--gcego-primary) 0%, color-mix(in oklab, var(--gcego-primary) 70%, black) 100%);
+    }
+
+    .sentinel-brand-sheen {
+        background-image: radial-gradient(closest-side, rgb(255 255 255 / 0.18), transparent);
+    }
+
+    .sentinel-brand-mark {
+        background-image: linear-gradient(145deg, color-mix(in oklab, var(--gcego-primary) 85%, white), var(--gcego-primary));
+        box-shadow: 0 1px 2px rgb(15 23 41 / 0.18), inset 0 1px 0 rgb(255 255 255 / 0.25);
+    }
+
+    .sentinel-accent-bar {
+        background-image: linear-gradient(90deg, var(--gcego-primary), color-mix(in oklab, var(--gcego-primary) 40%, var(--gcego-info)));
+    }
+
+    .sentinel-glow {
+        background-image: radial-gradient(55% 80% at 50% 0%, color-mix(in oklab, var(--gcego-primary) 14%, transparent), transparent);
+    }
+
+    .sentinel-avatar {
+        background-image: linear-gradient(145deg, color-mix(in oklab, var(--gcego-primary) 18%, transparent), color-mix(in oklab, var(--gcego-primary) 8%, transparent));
+    }
+
+    :where(.dark) .sentinel-brand-surface {
+        background-image: linear-gradient(150deg, color-mix(in oklab, var(--gcego-primary) 26%, var(--gcego-surface)) 0%, var(--gcego-background) 100%);
+    }
+
+    :where(.dark) .sentinel-brand-sheen {
+        background-image: radial-gradient(closest-side, color-mix(in oklab, var(--gcego-primary) 22%, transparent), transparent);
+    }
+}
+
+@layer base {
+    :root.dark {
+        --shadow-sentinel-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 16px 40px -16px rgb(0 0 0 / 0.7);
+        --shadow-sentinel-control: none;
+        --shadow-sentinel-raised: 0 1px 2px rgb(0 0 0 / 0.35);
+    }
+
+    [hidden] {
+        display: none !important;
+    }
+
+    :root {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        ::before,
+        ::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+
+        [data-sentinel-sensitive],
+        [data-sentinel-sensitive] * {
+            visibility: visible;
+        }
+
+        [data-sentinel-sensitive] {
+            position: absolute;
+            inset: 0 auto auto 0;
+        }
+    }
+}

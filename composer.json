@@ -1,0 +1,180 @@
+{
+    "name": "gcego/sentinel",
+    "description": "Independent authentication and account security for GCEGO Admin Studio: credential sign-in, registration policies, password recovery, email verification, TOTP two-factor with hashed single-use recovery codes, passkeys (WebAuthn), session lifetime and revocation, step-up confirmation, security holds, risk signals, audit trail and security notifications, panel- and tenant-aware redirects, with Livewire pages and Tailwind CSS v4 themes. Built on Laravel's own auth, hashing, session and encryption.",
+    "type": "library",
+    "keywords": [
+        "gcego",
+        "sentinel",
+        "authentication",
+        "two-factor",
+        "totp",
+        "passkeys",
+        "webauthn",
+        "livewire",
+        "laravel"
+    ],
+    "homepage": "https://github.com/gcego/sentinel",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Atangageih Leke Collins",
+            "email": "lekeatenga@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "bacon/bacon-qr-code": "^3.0",
+        "gcego/chroma": "^0.1",
+        "gcego/core": "^0.1",
+        "gcego/luminaries": "^0.1",
+        "gcego/security": "^0.1",
+        "gcego/swatches": "^0.1",
+        "laravel/framework": "^13.0",
+        "laravel/passkeys": "^0.2.1",
+        "livewire/livewire": "^4.4",
+        "pragmarx/google2fa": "^9.0"
+    },
+    "require-dev": {
+        "larastan/larastan": "^3.0",
+        "laravel/pint": "^1.14",
+        "orchestra/testbench": "^11.0",
+        "pestphp/pest": "^4.0"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../components",
+            "options": {
+                "versions": {
+                    "gcego/components": "0.1.0"
+                }
+            }
+        },
+        {
+            "type": "path",
+            "url": "../core",
+            "options": {
+                "versions": {
+                    "gcego/core": "0.1.0"
+                }
+            }
+        },
+        {
+            "type": "path",
+            "url": "../blueprints",
+            "options": {
+                "versions": {
+                    "gcego/blueprints": "0.1.0"
+                }
+            }
+        },
+        {
+            "type": "path",
+            "url": "../registry",
+            "options": {
+                "versions": {
+                    "gcego/registry": "0.1.0"
+                }
+            }
+        },
+        {
+            "type": "path",
+            "url": "../runtime",
+            "options": {
+                "versions": {
+                    "gcego/runtime": "0.1.0"
+                }
+            }
+        },
+        {
+            "type": "path",
+            "url": "../chroma",
+            "options": {
+                "versions": {
+                    "gcego/chroma": "0.1.0"
+                }
+            }
+        },
+        {
+            "type": "path",
+            "url": "../data",
+            "options": {
+                "versions": {
+                    "gcego/data": "0.1.0"
+                }
+            }
+        },
+        {
+            "type": "path",
+            "url": "../security",
+            "options": {
+                "versions": {
+                    "gcego/security": "0.1.0"
+                }
+            }
+        },
+        {
+            "type": "path",
+            "url": "../luminaries",
+            "options": {
+                "versions": {
+                    "gcego/luminaries": "0.1.0"
+                }
+            }
+        },
+        {
+            "type": "path",
+            "url": "../swatches",
+            "options": {
+                "versions": {
+                    "gcego/swatches": "0.1.0"
+                }
+            }
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Gcego\\Sentinel\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Gcego\\Sentinel\\Tests\\": "tests/",
+            "Workbench\\App\\": "workbench/app/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
+        }
+    },
+    "scripts": {
+        "analyse": "vendor/bin/phpstan analyse",
+        "test": [
+            "@php -r \"@unlink('vendor/orchestra/testbench-core/laravel/.env');\"",
+            "vendor/bin/pest"
+        ],
+        "format": "vendor/bin/pint",
+        "build-assets": "node scripts/build-assets.mjs",
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php vendor/bin/testbench migrate:fresh --seed --seeder=\"Workbench\\\\Database\\\\Seeders\\\\DatabaseSeeder\" --ansi",
+            "@php vendor/bin/testbench serve --ansi"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Gcego\\Sentinel\\SentinelServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "suggest": {
+        "gcego/panels": "Supply panels to Sentinel by binding Gcego\\Sentinel\\Contracts\\AuthenticationPanels."
+    }
+}

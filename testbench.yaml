@@ -1,0 +1,38 @@
+providers:
+  - Livewire\LivewireServiceProvider
+  - Laravel\Passkeys\PasskeysServiceProvider
+  - Gcego\Core\GcegoServiceProvider
+  - Gcego\Registry\RegistryServiceProvider
+  - Gcego\Runtime\RuntimeServiceProvider
+  - Gcego\Chroma\ChromaServiceProvider
+  - Gcego\Data\DataServiceProvider
+  - Gcego\Security\SecurityServiceProvider
+  - BladeUI\Icons\BladeIconsServiceProvider
+  - BladeUI\Heroicons\BladeHeroiconsServiceProvider
+  - MallardDuck\LucideIcons\BladeLucideIconsServiceProvider
+  - Gcego\Luminaries\LuminariesServiceProvider
+  - Gcego\Sentinel\SentinelServiceProvider
+  - Workbench\App\Providers\WorkbenchServiceProvider
+
+env:
+  - APP_KEY="base64:a2tra2tra2tra2tra2tra2tra2tra2tra2tra2tra2s="
+  - DB_CONNECTION=sqlite
+  - DB_DATABASE=workbench/database/database.sqlite
+  - CACHE_STORE=database
+  - MAIL_MAILER=log
+
+migrations:
+  - workbench/database/migrations
+
+seeders:
+  - Workbench\Database\Seeders\DatabaseSeeder
+
+workbench:
+  start: '/login'
+  install: false
+  discovers:
+    web: true
+  build:
+    - create-sqlite-db
+    - db-wipe
+    - migrate-fresh
